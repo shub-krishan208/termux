@@ -5,6 +5,8 @@ lsa() {
 
 alias cp='rsync -ahP'
 alias cd='z'
+alias tcget='termux-clipboard-get'
+alias tcset='termux-clipboard-set'
 
 # pnpm
 export PNPM_HOME="/data/data/com.termux/files/home/.local/share/pnpm"
