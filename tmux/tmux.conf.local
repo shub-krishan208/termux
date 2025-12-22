@@ -383,6 +383,9 @@ tmux_conf_urlscan_options="--compact --dedupe"
 
 # this is the place to override or undo settings
 
+# infrease escape-time
+set -g repeat-time 1000
+
 # increase history size
 #set -g history-limit 10000
 
@@ -408,7 +411,7 @@ tmux_conf_urlscan_options="--compact --dedupe"
 bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?#{mouse},on,off}'
 
 # move status line to top
-#set -g status-position top
+set -g status-position bottom
 
 
 # -- tpm -----------------------------------------------------------------------

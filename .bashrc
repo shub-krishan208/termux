@@ -1,3 +1,4 @@
+
 lsa() {
 	eza -la --icons --git "$@"
 }
@@ -22,29 +23,35 @@ export EDITOR=nvim
 
 # custom functions
 rcpp() {
+  # Ensure GNU time is used (install with: pkg install time)
+  local time_cmd="command time" 
+  
   if [[ "$1" == "--no" ]]; then
     shift
     local f="$1"
     local bin="./${f%.cpp}"
     g++ "$f" -o "$bin" && {
-      local stats=$(/usr/bin/time -f "%e %M" "$bin" 2>&1 >/dev/tty)
+      # Redirect bin stdout to tty, capture time stderr into var
+      local stats=$($time_cmd -f "%e %M" "$bin" 2>&1 >/dev/tty)
       local r_time=$(echo "$stats" | awk '{print $1 * 1000}')
       local r_mem=$(echo "$stats" | awk '{print $2}')
-      printf "\n== Performance ==\nTime: %s ms\nMemory: %s KB\n================\n" "$r_time" "$r_mem"
+      
+      # FIX: Added variables to printf
+      printf "\n\nTime: %s ms | Memory: %s KB\n" "$r_time" "$r_mem"
     }
   else
     local f="$1"
     local in="${2:-input.txt}"
     local bin="./${f%.cpp}"
-    # The timer starts ONLY at the execution of $bin
     g++ "$f" -o "$bin" && {
-      local stats=$(/usr/bin/time -f "%e %M" "$bin" < "$in" 2>&1 >/dev/tty)
+      local stats=$($time_cmd -f "%e %M" "$bin" < "$in" 2>&1 >/dev/tty)
       local r_time=$(echo "$stats" | awk '{print $1 * 1000}')
       local r_mem=$(echo "$stats" | awk '{print $2}')
-      printf "\n== Performance ==\nTime: %s ms\nMemory: %s KB\n================\n" "$r_time" "$r_mem"
+      printf "\n\nTime: %s ms | Memory: %s KB\n" "$r_time" "$r_mem"
     }
   fi
 }
+
 
 rncpp() {
   rcpp --no "$@"
