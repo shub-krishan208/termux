@@ -16,6 +16,11 @@ esac
 # pnpm end
 export EDITOR=nvim
 
+# Bind up and down arrows to search history based on current input
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+set completion-ignore-case export
+
 # aliases
 
 # custom functions
@@ -51,6 +56,10 @@ rcpp() {
 
 rncpp() {
   rcpp --no "$@"
+}
+
+gcpp() {
+  g++ "$1" -o "cpp.out" && ./cpp.out <input.txt
 }
 
 ff() {
